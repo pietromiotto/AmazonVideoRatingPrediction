@@ -1,21 +1,4 @@
----
-author:
-- Lovenesh Bhardwaj, Miotto Pietro
-date: May 18, 2024
-title: Data Analytics - Project 1 / Group Number 3 - Video Sharing
----
-
 # Introduction {#sec:introduction}
-
-This document outlines the methodology and results for the Data
-Analytic's Project 2. Here, a group of two students was tasked to apply
-concepts seen in class to describe and analyse a given data set. The
-group consists of the following students:
-
--   Bhardwaj Lovenesh
-
--   Miotto Pietro
-
 Our group has been tasked to predict products' ratings for some users
 based on other users' ratings. The dataset contains information on user
 preference data on instant video as well as information about each rated
@@ -71,29 +54,28 @@ file is that it wasn't formatted correctly and was very sparse. A lot of
 entries were empty or did not exist for most of the products. In
 addition, the JSON Object entries for `title`, `imUrl`, `salesRank`,
 `brand` did not exist in our dataset. Furthemore, as you can see in
-[3](#fig:rel){reference-type="ref" reference="fig:rel"}, only $137$
+[3](#fig:rel), only $137$
 products over $583796$ had a related entry. This means that $0.023\%$ of
 all products had information about related products. Also, the only
 `related` category present was `also_viewed`, there was no trace of
 other categories such as `also_bought`, `bought_together`,
 `buy_after_viewing`. Lastly, as you can see in
-[1](#fig:pr){reference-type="ref" reference="fig:pr"}, also the
+[1](#fig:pr), also the
 information about prices are very sparse: only $50571$ products over
 $583796$ (i.e. $8.7\%$ ) had information about their price. But this
 percentage is in line with the average spsrity of a dataset.
 
 <figure id="fig:rel">
 <figure id="fig:pr">
-<img src="images/images/price.png" />
+<img src="images/price.png" />
 <figcaption><span id="fig:pr" data-label="fig:pr"></span> Piechart of
 price labels</figcaption>
 </figure>
 <figure id="fig:rel">
-<img src="images/images/related.png" />
+<img src="images/related.png" />
 <figcaption><span id="fig:rel" data-label="fig:rel"></span> Piechart of
 price labels</figcaption>
 </figure>
-<figcaption>Side by side piecharts of category labels</figcaption>
 </figure>
 
 ## Data Pre-Processing
@@ -107,20 +89,17 @@ pandas dataframe. We merge the two datafremes on the product id. We thus
 obtain a dataframe structured like this, with $583796$ rows and $7$
 columns:
 
-::: {#tab:amazon_ratings}
-   **Index**    **ASIN**    **Categories**   **Price**   **Related**    **User ID**     **Rating**   **Timestamp**
-  ----------- ------------ ---------------- ----------- ------------- ---------------- ------------ ---------------
-       0       B000GFDAUG       A.I.V.          NaN          NaN       A1EE2E3N7PW666      5.0        1202256000
-       1       B000GFDAUG       A.I.V.          NaN          NaN       AGZ8SM1BGK3CK       5.0        1198195200
-       2       B000GIOPK2       A.I.V.          NaN          NaN       A2VHZ21245KBT7      4.0        1215388800
-       3       B000GIOPK2       A.I.V.          NaN          NaN       ACX8YW2D5EGP6       4.0        1185840000
-       4       B000GIOPK2       A.I.V.          NaN          NaN       A9RNMO9MUSMTJ       2.0        1281052800
-       5       B000GIOPK2       A.I.V.          NaN          NaN       A3STFVPM8NHJ7B      5.0        1203897600
-     \...         \...           \...          \...         \...            \...           \...          \...
+| Index | ASIN        | Categories | Price | Related | User ID         | Rating | Timestamp   |
+|-------|-------------|------------|-------|---------|-----------------|--------|-------------|
+| 0     | B000GFDAUG  | A.I.V.     | NaN   | NaN     | A1EE2E3N7PW666  | 5.0    | 1202256000  |
+| 1     | B000GFDAUG  | A.I.V.     | NaN   | NaN     | AGZ8SM1BGK3CK   | 5.0    | 1198195200  |
+| 2     | B000GIOPK2  | A.I.V.     | NaN   | NaN     | A2VHZ21245KBT7  | 4.0    | 1215388800  |
+| 3     | B000GIOPK2  | A.I.V.     | NaN   | NaN     | ACX8YW2D5EGP6   | 4.0    | 1185840000  |
+| 4     | B000GIOPK2  | A.I.V.     | NaN   | NaN     | A9RNMO9MUSMTJ   | 2.0    | 1281052800  |
+| 5     | B000GIOPK2  | A.I.V.     | NaN   | NaN     | A3STFVPM8NHJ7B  | 5.0    | 1203897600  |
+| ...   | ...         | ...        | ...   | ...     | ...             | ...    | ...         |
 
-  : Amazon Instant Video Ratings, 'A.I.V.' stands for 'Amazon Instant
-  Video'
-:::
+**Amazon Instant Video Ratings, 'A.I.V.' stands for 'Amazon Instant Video'**
 
 \
 After that, only for visibility purposes, we add to the dataframe a
@@ -133,18 +112,16 @@ re-factored as human-readbale dates, e.g. `1202256000` becomes
 ### Prices and Reviews
 
 The first visualization on data was to see how price and ratings are
-distributed. From [6](#fig:revh){reference-type="ref"
-reference="fig:revh"} we can see that ratings have a tendency to be
+distributed. From [6](#fig:revh) we can see that ratings have a tendency to be
 high, in fact, the `3`, `2` and `1` star ratings combined appear less
 than $150.000$, which, over almost $600.000$ total ratings, represents
 an astonishingly low number of bad reviews. Instead, by looking at
-[4](#fig:prh){reference-type="ref" reference="fig:prh"}, we can see how
+[4](#fig:prh), we can see how
 prices tend to concentrate on low values, the majority is less than $25$
 dollars. Lastly, we also plot a scatter on how prices are related to
-reviews. As shown in [7](#fig:prs){reference-type="ref"
-reference="fig:prs"}, the scatter plot shows a dispersed pattern without
+reviews. As shown in [7](#fig:prs), the scatter plot shows a dispersed pattern without
 any clear linear trend. For this reason, we compute also a scatter plot
-(as in [9](#fig:prsn){reference-type="ref" reference="fig:prsn"}) where
+(as in [9](#fig:prsn)) where
 the prices and reviews are normalized w.r.t to their frequency,with the
 aim to identify frequent combinations of price and rating values. We
 still see a dispersed pattern. Thus, we conclude that there is no strong
@@ -153,37 +130,34 @@ significant and robust values.
 
 <figure id="fig:revh">
 <figure id="fig:prh">
-<img src="images/images/price_chart.png" />
+<img src="images/price_chart.png" />
 <figcaption><span id="fig:prh" data-label="fig:prh"></span> Histogram of
 price frequencies</figcaption>
 </figure>
 <figure id="fig:revh">
-<img src="images/images/prating_chart.png" />
+<img src="images/prating_chart.png" />
 <figcaption><span id="fig:revh" data-label="fig:revh"></span> Histogram
 of rating frequencies</figcaption>
 </figure>
-<figcaption>Price and Ratings frequencies</figcaption>
 </figure>
 
 <figure id="fig:prsn">
 <figure id="fig:prs">
-<img src="images/images/prs.png" />
+<img src="images/prs.png" />
 <figcaption><span id="fig:prs" data-label="fig:prs"></span> Scatterplot
 of price and ratings</figcaption>
 </figure>
 <figure id="fig:prsn">
-<img src="images/images/prsn.png" />
+<img src="images/prsn.png" />
 <figcaption><span id="fig:prsn" data-label="fig:prsn"></span>
 Scatterplot of price and ratings normalized w.r.t.
 frequencies</figcaption>
 </figure>
-<figcaption>Price and Ratings Scatterplots</figcaption>
 </figure>
 
-::: wrapfigure
-r0.3 ![image](images/images/scattert.png){width="40%"} []{#fig:scatt
-label="fig:scatt"}
-:::
+
+ ![image](images/scattert.png)
+
 
 ### Time and Ratings
 
@@ -203,8 +177,7 @@ imagined, there are fewer ratings from previous years.
 
 We compute Piecharts of the most relevant values. As already stated
 above, we assess the sparisty of the dataframe. After that, as in
-[\[fig:piecat\]](#fig:piecat){reference-type="ref"
-reference="fig:piecat"}, we compute the piechart for the category, to
+[\[fig:piecat\]](#fig:piecat), we compute the piechart for the category, to
 have the confirm that all the products are of one specific category,
 i.e. Amazon Instant Video. Given that this category is always the same,
 we will not take it into consideration, by removing it from the
@@ -212,8 +185,7 @@ dataframe and from the correlation plot.
 
 ### Correlation Plot
 
-As shown in [\[fig:corrmatrix\]](#fig:corrmatrix){reference-type="ref"
-reference="fig:corrmatrix"}, we also plot a correlation matrix between
+As shown in [\[fig:corrmatrix\]](#fig:corrmatrix), we also plot a correlation matrix between
 `price`, `timestamps`, `rating`, `user_id_`, where '`_`' means that,
 being the user id an alphanumeric variable, we converted it into a
 numerical value so that it can be included in the correlation matrix. As
@@ -230,7 +202,7 @@ that, for a specific item, the `’related’` value contains a list of
 products that users typically view after purchasing the item. The first
 step was to visualize the graph of how related products where connected,
 i.e. how sparse the network would have been. As we can see in
-[10](#fig:net){reference-type="ref" reference="fig:net"}, most of the
+[10](#fig:net), most of the
 network is composed of outliers, indicating products that do not share
 related products with others. However, there is a core cluster where
 products are interconnected, suggesting that these products frequently
@@ -243,7 +215,7 @@ products links to ratings: we build an asymmetric matrix where if
 *product A* lists *product B* in its `also_viewed` list, it sets the
 respective cell to $1$, indicating that users who viewed *product A*
 also viewed *product B*. Then correlates this relationship with ratings.
-As shown in [12](#fig:heat){reference-type="ref" reference="fig:heat"},
+As shown in [12](#fig:heat),
 in general the matrix is very sparse and the correlation is low, but
 there are some noticeable relationships which highly correlate to
 similar ratings (by 'highly' I mean a slightly red color of the
@@ -253,18 +225,16 @@ deployment of our Recommender Systems.
 
 <figure id="fig:heat">
 <figure id="fig:net">
-<img src="images/images/net.png" />
+<img src="images/net.png" />
 <figcaption><span id="fig:net" data-label="fig:net"></span> Network of
 related products</figcaption>
 </figure>
 <figure id="fig:heat">
-<img src="images/images/heat.png" />
+<img src="images/heat.png" />
 <figcaption><span id="fig:heat" data-label="fig:heat"></span>
 Correlation Matrix of related product mentioning each other and
 rating</figcaption>
 </figure>
-<figcaption>Relevant plot for <code>related</code>
-information</figcaption>
 </figure>
 
 # First Recommender System
@@ -307,18 +277,17 @@ factors.
 
 ## Model Evaluation
 
-::: {#tab:predicted_actual_ratings}
-            **Index**             **Predicted Rating**   **Actual Rating**
-  ------------------------------ ---------------------- -------------------
-              521213                    4.720074                5.0
-              45709                     4.664076                5.0
-              480425                    4.539886                3.0
-              55281                     3.886119                5.0
-              147281                    4.317056                1.0
-   **RMSE: 1.0508151241203094**                         
+| Index  | Predicted Rating | Actual Rating |
+|--------|------------------|---------------|
+| 521213 | 4.720074         | 5.0           |
+| 45709  | 4.664076         | 5.0           |
+| 480425 | 4.539886         | 3.0           |
+| 55281  | 3.886119         | 5.0           |
+| 147281 | 4.317056         | 1.0           |
 
-  : Predicted and Actual Ratings
-:::
+**RMSE: 1.0508151241203094**
+
+**Predicted and Actual Ratings**
 
 Please note that SVD model, in Surprise library, uses basic interaction
 data (i.e. usres id, products id and ratings) to train and thus being
@@ -386,19 +355,17 @@ large is our dataset and how complex the embeddings).
 
 ## Model Evaluation
 
-::: {#tab:predicted_actual_ratings}
-         **Day of Week**          **Predicted Rating**   **Actual Rating**
-  ------------------------------ ---------------------- -------------------
-                4                       3.257990                5.0
-                4                       4.986308                5.0
-                4                       4.965138                5.0
-                4                       4.488194                3.0
-                4                       5.109684                5.0
-   **RMSE: 1.3874093239329934**                         
+| Day of Week | Predicted Rating | Actual Rating |
+|-------------|------------------|---------------|
+| 4           | 3.257990         | 5.0           |
+| 4           | 4.986308         | 5.0           |
+| 4           | 4.965138         | 5.0           |
+| 4           | 4.488194         | 3.0           |
+| 4           | 5.109684         | 5.0           |
 
-  : Predicted and Actual Ratings with Day of Week
-:::
+**RMSE: 1.3874093239329934**
 
+**Predicted and Actual Ratings with Day of Week**
 After running the model in `.eval()` mode on the test set, we define, as
 above, a `comparison_df` and we compute the `RMSE`. We get a RMSE value
 of $1.4$ slightly higher than the one obtained with the privious model.
