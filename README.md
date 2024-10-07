@@ -1,4 +1,4 @@
-# Introduction {#sec:introduction}
+# Predict Ratings of Amazon Istant Videos
 Our group has been tasked to predict products' ratings for some users
 based on other users' ratings. The dataset contains information on user
 preference data on instant video as well as information about each rated
@@ -44,9 +44,9 @@ following points:
 
 -   Test the accuracy of the two models using the test data
 
-# Data Exploration, Description and Preprocessing {#sec:1}
+## Data Exploration, Description and Preprocessing 
 
-## First Insights
+### First Insights
 
 The first step we made towards describing and analyizing the dataset,
 was to explore and understand the `JSON` file. The main issue with this
@@ -78,7 +78,7 @@ price labels</figcaption>
 </figure>
 </figure>
 
-## Data Pre-Processing
+### Data Pre-Processing
 
 As first, we created a function which formats the `JSON` file correctly.
 The main issue of the file was the use of single quotes instead of
@@ -107,9 +107,9 @@ column labeled as `readable_date`, which contains the timestamp
 re-factored as human-readbale dates, e.g. `1202256000` becomes
 `2008-02-06`
 
-## Data Visualization
+### Data Visualization
 
-### Prices and Reviews
+#### Prices and Reviews
 
 The first visualization on data was to see how price and ratings are
 distributed. From [6](#fig:revh) we can see that ratings have a tendency to be
@@ -159,7 +159,7 @@ frequencies</figcaption>
  ![image](images/scattert.png)
 
 
-### Time and Ratings
+#### Time and Ratings
 
 In order to find some interesting correlations, we plotted also the
 scatter on how timestamps relates to ratings. Here, since timestamps are
@@ -173,7 +173,7 @@ correlation, despite the fact that it concerns a really small sample of
 the dataset (i.e. the few ratings back in time). Lastly, note that, as
 imagined, there are fewer ratings from previous years.
 
-### Piecharts
+#### Piecharts
 
 We compute Piecharts of the most relevant values. As already stated
 above, we assess the sparisty of the dataframe. After that, as in
@@ -183,7 +183,7 @@ i.e. Amazon Instant Video. Given that this category is always the same,
 we will not take it into consideration, by removing it from the
 dataframe and from the correlation plot.
 
-### Correlation Plot
+#### Correlation Plot
 
 As shown in [\[fig:corrmatrix\]](#fig:corrmatrix), we also plot a correlation matrix between
 `price`, `timestamps`, `rating`, `user_id_`, where '`_`' means that,
@@ -191,7 +191,7 @@ being the user id an alphanumeric variable, we converted it into a
 numerical value so that it can be included in the correlation matrix. As
 visible at first sight, there is no interesting correlations.
 
-### Related
+#### Related
 
 Given that, as shown above, only $0.023\%$ of all the items in our
 dataset had a `’related’` information, we initially did not accounted
@@ -237,9 +237,9 @@ rating</figcaption>
 </figure>
 </figure>
 
-# First Recommender System
+## First Recommender System
 
-## Data Pre-Processing
+### Data Pre-Processing
 
 As stated above, the information regarding the related products has to
 be taken into account, while the category information can be discarded.
@@ -253,12 +253,12 @@ replace the missing `price` values with the mean and we call the
 us to treat this information in a simple way, i.e. it gives us the
 number of also viewed products.
 
-## Splitting in Train and Test Set
+### Splitting in Train and Test Set
 
 We use `sklearn train_test_split` module to split the dataframe in train
 and test set. We then drop the rating column from the test set.
 
-## Model and Procedure
+### Model and Procedure
 
 For this first model, we will use functions and classes from the library
 `Surprise`, which is a library specifically designed for building and
@@ -275,7 +275,7 @@ on these latent factor, the model can estimate missing entries, i.e.
 predicting how a user might rate an unseen item based on these latent
 factors.
 
-## Model Evaluation
+### Model Evaluation
 
 | Index  | Predicted Rating | Actual Rating |
 |--------|------------------|---------------|
@@ -307,9 +307,9 @@ on average, the predictions are 1 star less or more than the actual
 ones. Given how sparse and inconsistent was our dataset, this is a good
 result.
 
-# Second Recommender System
+## Second Recommender System
 
-## Data Pre-Processing
+### Data Pre-Processing
 
 For this second Recommender System, we need to treat time-related
 contextual information in a more significant way. For this reason, we
@@ -327,7 +327,7 @@ by time, and the test set 20% of the latest) and istantiate the
 respective train and test pytorch `Datasets` and pytorch `DataLoaders`,
 both with `batch_size=512`.
 
-## Model
+### Model
 
 As model we use a `RecommenderNet` Neural Network. This Neural Network
 is composed of two embedding layers (one for user and one for items),
@@ -343,7 +343,7 @@ non-linearity. Note that the model is istantiated by specifing number of
 users and number of items (used for building the emebdding layers) and
 an `embedding_size`, which, in our case, is $50$.
 
-## Training and Evaluation
+### Training and Evaluation
 
 We train the model on `GPU` (if available). We use `Adam` as optimizer
 and `MSE` (i.e. Mean Squared Error) as evaluation criterion for
@@ -353,7 +353,7 @@ epochs, given how many batches of data we are processing
 (`batch_size=512` is a high number of batches, but necessary given how
 large is our dataset and how complex the embeddings).
 
-## Model Evaluation
+### Model Evaluation
 
 | Day of Week | Predicted Rating | Actual Rating |
 |-------------|------------------|---------------|
