@@ -1,4 +1,4 @@
-# Predict Ratings of Amazon Istant Videos
+# Predict Ratings of Amazon Instant Videos
 Our group has been tasked to predict products' ratings for some users
 based on other users' ratings. The dataset contains information on user
 preference data on instant video as well as information about each rated
